@@ -26,13 +26,13 @@ class PreProcessing:
                 return int((age1+age2)/2)
 
     def processing_age(self,BIN_AGE = 5):
-        age1 = dataset.age_source1.fillna(0)
-        age2 = dataset.age_source2.fillna(0)
+        age1 = self.dataset.age_source1.fillna(0)
+        age2 = self.dataset.age_source2.fillna(0)
 
         age = []
         
         for a1,a2 in zip(age1,age2):
-            age.append(combine_age(a1,a2))
+            age.append(self.combine_age(a1,a2))
         self.dataset = self.dataset.drop(["age_source1","age_source2"],axis = 1)
         
         self.dataset["age"] = pd.cut(age,bins= list(range(0,101,BIN_AGE)),labels=list(range(0,int(100/BIN_AGE))))    
@@ -43,6 +43,8 @@ class PreProcessing:
         
     def processing_district(self):
         self.dataset.district = self.dataset.district.map(lambda x: str(x).lower())
+    def drop_maCv(self):
+        self.dataset = self.dataset.drop("maCv",axis = 1)
 
     def cutFIELD_3(self):
         F3_unique = self.dataset.FIELD_3.unique()
@@ -131,7 +133,25 @@ class PreProcessing:
 
         self.dataset["FIELD_40"] = F40
 
-    def fit(self,dataset):
+    def transform(self):
+        if self.dropNa == True:
+            self.drop_null_row()
+        
+        self.processing_age()
+        self.processing_province()
+        self.processing_district()
+        self.drop_maCv()
+        self.cutFIELD_3()
+        self.healthIsr_FIELD_7_9()
+        self.degree_FIELD_11()
+        self.cl_FIELD_12()
+        self.country_FIELD_39()
+        self.cl_FIELD_40()
+
+        return self.dataset
+
+    def fit(self,dataset,dropNa = False):
         self.dataset = dataset
+        self.dropNa = dropNa
     
     
