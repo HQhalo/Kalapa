@@ -39,7 +39,7 @@ class PreProcessing:
         # self.dataset["age"] = age
         list(pd.cut(age,bins= list(range(0,101,BIN_AGE)),labels=list(range(0,int(100/BIN_AGE)))) )
     def encode_label(self):
-        encode_cols = ["province","district","FIELD_8","FIELD_10","FIELD_11","FIELD_13","FIELD_17","FIELD_24","FIELD_39",
+        encode_cols = ["province","district","FIELD_8","FIELD_10","FIELD_11","FIELD_12","FIELD_13","FIELD_17","FIELD_24","FIELD_39",
         "FIELD_40","FIELD_41","FIELD_42","FIELD_44"]  
         encode_df = self.dataset[encode_cols]
         # temp = encode_df.astype("str") 
