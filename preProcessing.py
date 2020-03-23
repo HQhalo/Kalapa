@@ -144,7 +144,7 @@ class PreProcessing:
         data_12 = self.dataset.FIELD_12
         data_12 = data_12.replace(to_replace=["0.0","0"],value=0)
         data_12 = data_12.replace(to_replace=["1.0","1"],value=1)
-        data_12 = data_12.replace(to_replace=["TN","HT"],value=np.nan)
+        data_12 = data_12.where((data_12== 1) | (data_12 == 0),np.nan )
 
         self.dataset["FIELD_12"] = data_12
     def convert_field_35(self,val):
